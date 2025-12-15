@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveDirection;
     public bool IsWalking { get; private set;}
+    public bool Ladder = false;
 
     private void Awake()
     {
@@ -33,6 +34,12 @@ public class Player : MonoBehaviour
     private void PlayerMove()
     {
         moveDirection = gameInput.GetInputMove();
+
+        if(!Ladder)
+        {
+            moveDirection.y = 0;
+        }
+
         IsWalking = moveDirection != Vector2.zero;
         RotatePlayer();
     }
