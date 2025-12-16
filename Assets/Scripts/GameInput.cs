@@ -6,26 +6,41 @@ using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
+    public event EventHandler OnInteract;
+
     private Player_Action playerAction;
     private Vector2 inputAction;
 
     private void Awake()
     {
         playerAction = new Player_Action();
-        playerAction.Player.Move.Enable();
-
     }
 
     private void OnEnable()
     {
+        playerAction.Player.Move.Enable();
+        playerAction.Player.Interaction.Enable();
+
+
         playerAction.Player.Move.performed += SetInputMove;
         playerAction.Player.Move.canceled += SetInputMove;
+
+        playerAction.Player.Interaction.performed += Interact_Performed;
     }
 
     private void OnDisable()
     {
+        playerAction.Player.Move.Disable();
+        playerAction.Player.Interaction.Disable();
+
         playerAction.Player.Move.performed -= SetInputMove;
         playerAction.Player.Move.canceled -= SetInputMove;
+
+        playerAction.Player.Interaction.performed -= Interact_Performed;
+    }
+    private void Interact_Performed(InputAction.CallbackContext context)
+    {
+        OnInteract?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetInputMove(InputAction.CallbackContext context)
