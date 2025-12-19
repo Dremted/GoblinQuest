@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
 
     private IInteract currentInteract;
     public PlayerState currentPlayerState { get; private set; }
+
     private Door currentDoor;
+    [SerializeField] private Inventory inventory;
 
     private void Awake()
     {
@@ -132,6 +134,11 @@ public class Player : MonoBehaviour
     {
         currentDoor = null;
         currentPlayerState = PlayerState.Idle;
+    }
+
+    public void AddItemInventory(ItemsSO itemsSO)
+    {
+        inventory.AddInventory(itemsSO);
     }
 }
 public enum PlayerState
