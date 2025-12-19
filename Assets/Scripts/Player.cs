@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
     {
         moveDirection = gameInput.GetInputMove();
 
+        moveDirection.y = 0;
 
         if(moveDirection != Vector2.zero)
         {
@@ -122,7 +123,7 @@ public class Player : MonoBehaviour
     public void OnDoorEntered()
     {
         if (currentDoor == null) return;
-
+        Debug.Log("player check");
         transform.position = currentDoor.NextDoor.position;
         currentPlayerState = PlayerState.ExitDoor;
     }

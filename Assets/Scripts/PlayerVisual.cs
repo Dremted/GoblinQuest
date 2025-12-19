@@ -24,11 +24,11 @@ public class PlayerVisual : MonoBehaviour
         switch (player.currentPlayerState)
         {
             case PlayerState.EnterDoor:
-                animator.Play(AnimationString.EnterDoor);
+                animator.SetTrigger(AnimationString.EnterDoor);
                 break;
 
             case PlayerState.ExitDoor:
-                animator.Play(AnimationString.ExitDoor);
+                animator.SetTrigger(AnimationString.ExitDoor);
                 break;
         }
 
@@ -37,6 +37,7 @@ public class PlayerVisual : MonoBehaviour
 
     public void OnDoorEntered()
     {
+        Debug.Log("PlayerVisual chaek");
         player.OnDoorEntered();
     }
 
