@@ -1,9 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public event EventHandler<EventArgsItem> OnGetItem;
+
+    public class EventArgsItem
+    {
+        public ItemsSO Item;
+    }
+
     [SerializeField] private Transform cellsInventory;
     [SerializeField] private Transform itemCell;
 
@@ -20,6 +28,8 @@ public class Inventory : MonoBehaviour
     {
         if (maxInventory <= itemsSOList.Count)
             return;
+
+        OnGetItem?.Invoke(this, new EventArgsItem { Item = item });
 
         itemsSOList.Add(item);
         UpdateVisual();
@@ -47,6 +57,15 @@ public class Inventory : MonoBehaviour
             transformCellInventory.gameObject.SetActive(true);
             transformCellInventory.GetComponent<ItemCell>().SetIcon(item);
             
+        }
+    }
+
+    public void DeleteItem(ItemsSO itemToRemove)
+    {
+        if (itemsSOList.Contains(itemToRemove))
+        {
+            itemsSOList.Remove(itemToRemove);
+            UpdateVisual();
         }
     }
 }

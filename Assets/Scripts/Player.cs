@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     private Vector2 moveDirection;
     public bool IsWalking { get; private set;}
 
+    public bool IsSetTrap {  get; private set;}
+
     private IInteract currentInteract;
     public PlayerState currentPlayerState { get; private set; }
 
@@ -62,13 +64,20 @@ public class Player : MonoBehaviour
 
         if(moveDirection != Vector2.zero)
         {
+            if(currentPlayerState == PlayerState.SetTrap)
+            {
+                PlayerStopInteract();
+            }
             currentPlayerState = PlayerState.Move;
             IsWalking = true;
         }
         else
         {
-            currentPlayerState = PlayerState.Idle;
-            IsWalking = false;
+            if (currentPlayerState != PlayerState.SetTrap)
+            {
+                currentPlayerState = PlayerState.Idle;
+                IsWalking = false;
+            }
         }
 
             RotatePlayer();
@@ -93,10 +102,12 @@ public class Player : MonoBehaviour
         {
             case PlayerState.Idle:
             case PlayerState.Move:
+            case PlayerState.SetTrap:
                 PlayerMove();
                 break;
             case PlayerState.EnterDoor:
             case PlayerState.ExitDoor:
+            
                 break;
         }
     }
@@ -140,11 +151,24 @@ public class Player : MonoBehaviour
     {
         inventory.AddInventory(itemsSO);
     }
+
+    public void PlayerSetTrap()
+    {
+        currentPlayerState = PlayerState.SetTrap;
+        IsSetTrap = true;
+    }
+
+    public void PlayerStopInteract()
+    {
+        currentPlayerState = PlayerState.Idle;
+        IsSetTrap = false;
+    }
 }
 public enum PlayerState
 {
     Idle,
     Move,
     EnterDoor,
-    ExitDoor
+    ExitDoor,
+    SetTrap
 }

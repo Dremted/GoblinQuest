@@ -18,8 +18,10 @@ public class PlayerVisual : MonoBehaviour
     private void Update()
     {
         animator.SetBool(AnimationString.isWalking, player.IsWalking);
+        animator.SetBool(AnimationString.SetTrap, player.IsSetTrap);
 
         if (player.currentPlayerState == lastState) return;
+
 
         switch (player.currentPlayerState)
         {
@@ -37,7 +39,6 @@ public class PlayerVisual : MonoBehaviour
 
     public void OnDoorEntered()
     {
-        Debug.Log("PlayerVisual chaek");
         player.OnDoorEntered();
     }
 

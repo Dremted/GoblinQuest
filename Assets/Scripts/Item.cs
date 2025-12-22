@@ -5,7 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour, IInteract
 {
     [SerializeField] private ItemsSO itemsSO;
-
+    [SerializeField] private Transform selectedItem;
 
     public void Interact(Player player)
     {
@@ -18,6 +18,7 @@ public class Item : MonoBehaviour, IInteract
         if (!collision.gameObject.TryGetComponent(out Player player)) return;
         {
             player.SetInteractable(this);
+            selectedItem.gameObject.SetActive(true);
         }
     }
 
@@ -26,6 +27,7 @@ public class Item : MonoBehaviour, IInteract
         if (!collision.gameObject.TryGetComponent(out Player player)) return;
         {
             player.ClearInteractable(this);
+            selectedItem.gameObject.SetActive(false);
         }
     }
 }
