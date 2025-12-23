@@ -8,4 +8,5 @@ public static class AnimationString
     public static string EnterDoor = "EnterDoor";
     public static string ExitDoor = "ExitDoor";
     public static string SetTrap = "SetTrap";
+    public static string isOpen = "isOpen";
 }

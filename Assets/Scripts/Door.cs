@@ -19,6 +19,7 @@ public class Door : MonoBehaviour, IInteract
     {
         if ((playerLayerMask.value & 1 << collision.gameObject.layer) > 0)
         {
+            Debug.Log("player");
             player = collision.gameObject.GetComponent<Player>();
             if (player == null) return;
 

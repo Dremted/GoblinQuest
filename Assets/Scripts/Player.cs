@@ -10,7 +10,8 @@ public class Player : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private float speedOpenDoor = 3f;
+    [SerializeField] private float distanceRay = 1f;
+    [SerializeField] private LayerMask doorLayerMask;
     
     private Rigidbody2D rb;
     private Vector2 moveDirection;
@@ -19,9 +20,13 @@ public class Player : MonoBehaviour
     public bool IsSetTrap {  get; private set;}
 
     private IInteract currentInteract;
+
+    private IInteract triggerInteract;
     public PlayerState currentPlayerState { get; private set; }
 
     private Door currentDoor;
+    private NotWallDoor notWallDoor;
+
     [SerializeField] private Inventory inventory;
 
     private void Awake()
@@ -46,14 +51,14 @@ public class Player : MonoBehaviour
     private void Update()
     {
         UpdateState();
+
+        DetectInteractable();
     }
 
     private void FixedUpdate()
     {
         if (currentPlayerState == PlayerState.Move)
             rb.velocity = moveDirection.normalized * moveSpeed;
-        else if (currentPlayerState == PlayerState.EnterDoor)
-            rb.velocity = moveDirection.normalized * speedOpenDoor;
         else
             rb.velocity = Vector2.zero;
     }
@@ -98,6 +103,39 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void DetectInteractable()
+    {
+        Vector2 facingDirection = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            facingDirection,
+            distanceRay,
+            doorLayerMask
+        );
+
+        if (hit.collider != null && hit.collider.TryGetComponent<IInteract>(out var rayInteract))
+        {
+            if (currentInteract != rayInteract)
+            {
+                ResetVisuals(); 
+                currentInteract = rayInteract;
+                if (currentInteract is NotWallDoor door) door.SetHighlighted(true);
+            }
+        }
+        else
+        {
+            ResetVisuals();
+            currentInteract = triggerInteract;
+        }
+    }
+
+    private void ResetVisuals()
+    {
+        if (currentInteract is NotWallDoor door) door.SetHighlighted(false);
+    }
+
+
     private void UpdateState()
     {
         switch (currentPlayerState)
@@ -107,6 +145,7 @@ public class Player : MonoBehaviour
             case PlayerState.SetTrap:
                 PlayerMove();
                 break;
+            case PlayerState.OpenDoor:
             case PlayerState.EnterDoor:
             case PlayerState.ExitDoor:
             
@@ -116,13 +155,12 @@ public class Player : MonoBehaviour
 
     public void SetInteractable(IInteract interact)
     {
-        currentInteract = interact;
+        triggerInteract = interact;
     }
 
     public void ClearInteractable(IInteract interact)
     {
-        if (currentInteract == interact)
-            currentInteract = null;
+        if (triggerInteract == interact) triggerInteract = null;
     }
 
     public void EnterDoor(Door door)
