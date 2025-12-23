@@ -20,6 +20,7 @@ public class PlayerVisual : MonoBehaviour
         animator.SetBool(AnimationString.isWalking, player.IsWalking);
         animator.SetBool(AnimationString.SetTrap, player.IsSetTrap);
 
+
         if (player.currentPlayerState == lastState) return;
 
 

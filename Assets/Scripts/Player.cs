@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameInput gameInput;
 
     [Header("Stats")]
-    [SerializeField] private float moveSpeed = 3f;
-
+    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField] private float speedOpenDoor = 3f;
     
     private Rigidbody2D rb;
     private Vector2 moveDirection;
@@ -52,6 +52,8 @@ public class Player : MonoBehaviour
     {
         if (currentPlayerState == PlayerState.Move)
             rb.velocity = moveDirection.normalized * moveSpeed;
+        else if (currentPlayerState == PlayerState.EnterDoor)
+            rb.velocity = moveDirection.normalized * speedOpenDoor;
         else
             rb.velocity = Vector2.zero;
     }
@@ -163,6 +165,11 @@ public class Player : MonoBehaviour
         currentPlayerState = PlayerState.Idle;
         IsSetTrap = false;
     }
+
+    public void SetPlayerState(PlayerState playerState)
+    {
+        currentPlayerState = playerState;
+    }
 }
 public enum PlayerState
 {
@@ -170,5 +177,6 @@ public enum PlayerState
     Move,
     EnterDoor,
     ExitDoor,
-    SetTrap
+    SetTrap,
+    OpenDoor
 }
