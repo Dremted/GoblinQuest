@@ -17,7 +17,8 @@ public class VisualOpenDoor : MonoBehaviour
     
     void Update()
     {
-        animator.SetBool(AnimationString.isOpen, notWallDoor.isOpen);
+        animator.SetBool(AnimationString.isOpenLeft, notWallDoor.isOpenLeft);
+        animator.SetBool(AnimationString.isOpenRight, notWallDoor.isOpenRight);
     }
 
     public void OpenDone()

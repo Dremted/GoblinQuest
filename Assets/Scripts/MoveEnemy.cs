@@ -5,7 +5,10 @@ using UnityEngine;
 public class MoveEnemy : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
+    [SerializeField] private float distanceRay=2f;
+    [SerializeField] private LayerMask doorLayerMask;
 
+    private Vector2 moveDir;
     private Transform nextPoint;
     private Rigidbody2D rb;
     private EnemyState currentState;
@@ -18,11 +21,27 @@ public class MoveEnemy : MonoBehaviour
         currentState = EnemyState.Idle;
     }
 
+    private void Update()
+    {
+        Vector2 facingDirection = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            facingDirection,
+            distanceRay,
+            doorLayerMask
+            );
+        if (hit.collider != null && hit.collider.TryGetComponent<NotWallDoor>(out NotWallDoor notWallDoor))
+        {
+            notWallDoor.UseEnemy(this);
+        }
+    }
+
     private void FixedUpdate()
     {
         switch (currentState)
         {
             case EnemyState.Idle:
+            case EnemyState.UseDoor:
                 rb.velocity = Vector3.zero;
                 IsWalking = false;
                 break;
@@ -34,7 +53,7 @@ public class MoveEnemy : MonoBehaviour
 
     private void Move()
     {
-        Vector3 moveDir = nextPoint.position - transform.position;
+        moveDir = nextPoint.position - transform.position;
         rb.velocity = moveDir.normalized * MoveSpeed;
         IsWalking = true;
         RotateEnemy();
@@ -73,5 +92,6 @@ public enum EnemyState
 {
     Idle,
     Patrol,
-    Gotcha
+    Gotcha,
+    UseDoor
 }

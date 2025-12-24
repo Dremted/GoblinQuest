@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: openDoor
+  m_Name: isOpenDoor_Left
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -1319051035, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
+      value: {fileID: 574744657, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
     - time: 0.1
-      value: {fileID: 395805843, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
+      value: {fileID: 199384573, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
     - time: 0.2
-      value: {fileID: -802658333, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
+      value: {fileID: -1328411152, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
     - time: 0.3
-      value: {fileID: -1113258820, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
+      value: {fileID: 1858073848, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,10 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -1319051035, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
-    - {fileID: 395805843, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
-    - {fileID: -802658333, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
-    - {fileID: -1113258820, guid: 8dece32e9fddf174f8e15dd1b28d95ef, type: 3}
+    - {fileID: 574744657, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
+    - {fileID: 199384573, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
+    - {fileID: -1328411152, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
+    - {fileID: 1858073848, guid: 1e5f9e53d02092b4baffdab0239be460, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
