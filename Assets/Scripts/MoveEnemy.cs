@@ -5,8 +5,7 @@ using UnityEngine;
 public class MoveEnemy : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
-    [SerializeField] private float distanceRay=2f;
-    [SerializeField] private LayerMask doorLayerMask;
+    [SerializeField] private float openDoorSpeed;
 
     private Vector2 moveDir;
     private Transform nextPoint;
@@ -21,28 +20,13 @@ public class MoveEnemy : MonoBehaviour
         currentState = EnemyState.Idle;
     }
 
-    private void Update()
-    {
-        Vector2 facingDirection = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-        RaycastHit2D hit = Physics2D.Raycast(
-            transform.position,
-            facingDirection,
-            distanceRay,
-            doorLayerMask
-            );
-        if (hit.collider != null && hit.collider.TryGetComponent<NotWallDoor>(out NotWallDoor notWallDoor))
-        {
-            notWallDoor.UseEnemy(this);
-        }
-    }
-
     private void FixedUpdate()
     {
         switch (currentState)
         {
             case EnemyState.Idle:
             case EnemyState.UseDoor:
-                rb.velocity = Vector3.zero;
+
                 IsWalking = false;
                 break;
             case EnemyState.Patrol:
@@ -86,6 +70,7 @@ public class MoveEnemy : MonoBehaviour
     {
         return currentState;
     }
+
 }
 
 public enum EnemyState

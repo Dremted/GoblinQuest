@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
             {
                 ResetVisuals(); 
                 currentInteract = rayInteract;
-                if (currentInteract is NotWallDoor door) door.SetHighlighted(true);
+                if (currentInteract is NotWallDoor door && !door.isOpen) door.SetHighlighted(true);
             }
         }
         else
@@ -132,7 +132,11 @@ public class Player : MonoBehaviour
 
     private void ResetVisuals()
     {
-        if (currentInteract is NotWallDoor door) door.SetHighlighted(false);
+        if (currentInteract is NotWallDoor door )
+        {
+            if(door.isOpen)
+                door.SetHighlighted(false);
+        }
     }
 
 
