@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveEnemy : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
-    [SerializeField] private float openDoorSpeed;
+    [SerializeField] private float openDoorSpeed = 3f;
 
     private Vector2 moveDir;
     private Transform nextPoint;
@@ -25,9 +25,17 @@ public class MoveEnemy : MonoBehaviour
         switch (currentState)
         {
             case EnemyState.Idle:
-            case EnemyState.UseDoor:
-
+                rb.velocity = Vector2.zero;
                 IsWalking = false;
+                break;
+            case EnemyState.UseDoor:
+                if (nextPoint != null)
+                {
+                    moveDir = nextPoint.position - transform.position;
+                    rb.velocity = moveDir.normalized * openDoorSpeed;
+                }
+                IsWalking = true; 
+                RotateEnemy();    
                 break;
             case EnemyState.Patrol:
                 Move();
@@ -71,6 +79,10 @@ public class MoveEnemy : MonoBehaviour
         return currentState;
     }
 
+    public void CloseDoor()
+    {
+        
+    }
 }
 
 public enum EnemyState

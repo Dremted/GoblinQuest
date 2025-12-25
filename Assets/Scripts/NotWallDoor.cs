@@ -18,9 +18,6 @@ public class NotWallDoor : MonoBehaviour, IInteract
     private Collider2D col;
     
 
-    public bool isOpenLeft {  get; private set; }
-    public bool isOpenRight { get; private set; }
-
     private void Awake()
     {
         col = GetComponent<Collider2D>();
@@ -32,6 +29,7 @@ public class NotWallDoor : MonoBehaviour, IInteract
     {
         if (!isOpen)
         {
+            currentStateDoor = StateDoor.Open;
             currentPlayer = player;
             currentPlayer.SetPlayerState(PlayerState.OpenDoor);
             if (col.enabled)
@@ -72,11 +70,11 @@ public class NotWallDoor : MonoBehaviour, IInteract
 
             if (positionPlayer.x > 0)
             {
-                isOpenLeft = true;
+
             }
             else
             {
-                isOpenRight = true;
+
             }
         }
     }
@@ -89,14 +87,32 @@ public class NotWallDoor : MonoBehaviour, IInteract
         Vector3 positionEnemy = enemy.transform.position - transform.position;
         if (positionEnemy.x > 0)
         {
-            isOpenLeft = true;
+
         }
         else
         {
-            isOpenRight = true;
+
         }
         currentStateDoor = StateDoor.Use;
         colDoor.gameObject.SetActive(false);
+    }
+
+    public void CloseDoor(MoveEnemy moveEnemy)
+    {
+        if(enemy == null)
+        {
+            enemy = moveEnemy;
+        }
+        Vector3 positionEnemy = enemy.transform.position - transform.position;
+        if (positionEnemy.x > 0)
+        {
+
+        }
+        else
+        {
+
+        }
+        colDoor.gameObject.SetActive(true);
     }
 }
 

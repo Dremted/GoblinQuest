@@ -12,13 +12,14 @@ public class VisualOpenDoor : MonoBehaviour
     {
         notWallDoor = GetComponentInParent<NotWallDoor>();
         animator = GetComponent<Animator>();
+
+        animator.Update(0f);
     }
 
     
     void Update()
     {
-        animator.SetBool(AnimationString.isOpenLeft, notWallDoor.isOpenLeft);
-        animator.SetBool(AnimationString.isOpenRight, notWallDoor.isOpenRight);
+        animator.SetBool(AnimationString.isOpen, notWallDoor.isOpen);
     }
 
     public void OpenDone()
