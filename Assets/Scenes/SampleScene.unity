@@ -2822,7 +2822,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.16354656, y: -0.015213728}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2833,7 +2833,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.3270931, y: 1.0304275}
   m_EdgeRadius: 0
 --- !u!1 &635178267
 GameObject:
@@ -3348,7 +3348,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -4888,6 +4888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 7
   openDoorSpeed: 3
+  currentState: 0
 --- !u!50 &1943021314
 Rigidbody2D:
   serializedVersion: 4
