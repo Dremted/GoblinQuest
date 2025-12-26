@@ -9,6 +9,7 @@ public class Door : MonoBehaviour, IInteract
     [SerializeField] private Transform nextDoor;
     public Transform NextDoor => nextDoor;
     private Player player;
+    public bool isOpen {  get; private set ; }
 
     public void Interact(Player player)
     {
@@ -22,7 +23,7 @@ public class Door : MonoBehaviour, IInteract
             Debug.Log("player");
             player = collision.gameObject.GetComponent<Player>();
             if (player == null) return;
-
+            
             player.SetInteractable(this);
         }
     }
@@ -31,7 +32,13 @@ public class Door : MonoBehaviour, IInteract
     {
         player = collision.gameObject.GetComponent<Player>();
         if (player == null) return;
-        
+
         player.ClearInteractable(this);
     }
+    
+    public void SetFalg(bool value)
+    {
+        isOpen = value;
+    }
 }
+

@@ -174,6 +174,7 @@ public class Player : MonoBehaviour
 
         currentDoor = door;
         currentPlayerState = PlayerState.EnterDoor;
+        currentDoor.SetFalg(true);
         IsWalking = false;
     }
 
@@ -187,6 +188,7 @@ public class Player : MonoBehaviour
 
     public void OnDoorExitFinished()
     {
+        currentDoor.SetFalg(false);
         currentDoor = null;
         currentPlayerState = PlayerState.Idle;
     }
