@@ -6,36 +6,34 @@ public class MoveEnemy : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float openDoorSpeed = 3f;
+    [SerializeField] private EnemyState currentState;
 
     private Vector2 moveDir;
     private Transform nextPoint;
     private Rigidbody2D rb;
-    private EnemyState currentState;
+
 
     public bool IsWalking { get; private set; }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentState = EnemyState.Idle;
     }
 
     private void FixedUpdate()
     {
         switch (currentState)
         {
+            case EnemyState.Sleep:
+                rb.velocity = Vector2.zero;
+                IsWalking = false;
+                break;
             case EnemyState.Idle:
                 rb.velocity = Vector2.zero;
                 IsWalking = false;
                 break;
             case EnemyState.UseDoor:
-                if (nextPoint != null)
-                {
-                    moveDir = nextPoint.position - transform.position;
-                    rb.velocity = moveDir.normalized * openDoorSpeed;
-                }
-                IsWalking = true; 
-                RotateEnemy();    
+                UseDoor();
                 break;
             case EnemyState.Patrol:
                 Move();
@@ -51,9 +49,19 @@ public class MoveEnemy : MonoBehaviour
         RotateEnemy();
     }
 
+    private void UseDoor()
+    {
+        if (nextPoint != null)
+        {
+            moveDir = nextPoint.position - transform.position;
+            rb.velocity = moveDir.normalized * openDoorSpeed;
+        }
+        IsWalking = true;
+        RotateEnemy();
+    }
+
     private void RotateEnemy()
     {
-
         if (rb.velocity.x > 0)
         {
             transform.localScale = Vector3.one;
@@ -78,17 +86,12 @@ public class MoveEnemy : MonoBehaviour
     {
         return currentState;
     }
-
-    public void CloseDoor()
-    {
-        
-    }
 }
-
 public enum EnemyState
 {
     Idle,
     Patrol,
     Gotcha,
-    UseDoor
+    UseDoor,
+    Sleep
 }

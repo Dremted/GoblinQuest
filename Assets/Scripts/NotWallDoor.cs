@@ -12,18 +12,14 @@ public class NotWallDoor : MonoBehaviour, IInteract
     private MoveEnemy enemy;
     private StateDoor currentStateDoor;
 
-
     public bool isOpen => currentStateDoor == StateDoor.Open;
-
     private Collider2D col;
     
-
     private void Awake()
     {
         col = GetComponent<Collider2D>();
         currentStateDoor = StateDoor.Close;
     }
-
 
     public void Interact(Player player)
     {
@@ -32,11 +28,10 @@ public class NotWallDoor : MonoBehaviour, IInteract
             currentStateDoor = StateDoor.Open;
             currentPlayer = player;
             currentPlayer.SetPlayerState(PlayerState.OpenDoor);
+            selected.gameObject.SetActive(false);
             if (col.enabled)
             {
-                PositionPlayer();
                 colDoor.gameObject.SetActive(false);
-                selected.gameObject.SetActive(isOpen);
             }
         }
     }
@@ -48,35 +43,12 @@ public class NotWallDoor : MonoBehaviour, IInteract
 
     public void OpenDoor()
     {
-        
         if (currentPlayer != null)
         {
-
             currentPlayer.SetPlayerState(PlayerState.Idle);
             currentPlayer = null;
         }
-        if (enemy != null)
-        {
-            enemy = null;
-        }
         currentStateDoor = StateDoor.Open;
-    }
-
-    public void PositionPlayer()
-    {
-        if (currentPlayer != null)
-        {
-            Vector3 positionPlayer = currentPlayer.transform.position - transform.position;
-
-            if (positionPlayer.x > 0)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
     }
 
     public void UseEnemy(MoveEnemy moveEnemy)
@@ -84,35 +56,15 @@ public class NotWallDoor : MonoBehaviour, IInteract
         enemy = moveEnemy;
         enemy.SetEnemyState(EnemyState.UseDoor);
 
-        Vector3 positionEnemy = enemy.transform.position - transform.position;
-        if (positionEnemy.x > 0)
-        {
-
-        }
-        else
-        {
-
-        }
-        currentStateDoor = StateDoor.Use;
+        currentStateDoor = StateDoor.Open;
         colDoor.gameObject.SetActive(false);
     }
 
-    public void CloseDoor(MoveEnemy moveEnemy)
+    public void CloseDoor()
     {
-        if(enemy == null)
-        {
-            enemy = moveEnemy;
-        }
-        Vector3 positionEnemy = enemy.transform.position - transform.position;
-        if (positionEnemy.x > 0)
-        {
-
-        }
-        else
-        {
-
-        }
+        currentStateDoor = StateDoor.Close;
         colDoor.gameObject.SetActive(true);
+        enemy = null;
     }
 }
 

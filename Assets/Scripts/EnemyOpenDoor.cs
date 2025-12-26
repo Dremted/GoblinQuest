@@ -23,14 +23,8 @@ public class EnemyOpenDoor : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out door)) return;
-
-        if(door.isOpen)
-        {
-            door.CloseDoor(moveEnemy);
-        }
-
+        door.CloseDoor();
+        moveEnemy.SetEnemyState(EnemyState.Patrol);
         door = null;
-
-        
     }
 }
