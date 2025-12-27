@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NotWallDoor : MonoBehaviour, IInteract
+public class HorizontalDoor : MonoBehaviour, IInteract
 {
     [SerializeField] Transform selected;
     [SerializeField] Transform colDoor;
@@ -54,6 +54,7 @@ public class NotWallDoor : MonoBehaviour, IInteract
     public void UseEnemy(MoveEnemy moveEnemy)
     {
         enemy = moveEnemy;
+        
         enemy.SetEnemyState(EnemyState.UseDoor);
 
         currentStateDoor = StateDoor.Open;

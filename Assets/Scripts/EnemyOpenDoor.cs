@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyOpenDoor : MonoBehaviour
 {
     private MoveEnemy moveEnemy;
-    private NotWallDoor door;
+    private HorizontalDoor door;
+    private EnemyState enemyState;
 
     private void Awake()
     {
@@ -14,6 +15,8 @@ public class EnemyOpenDoor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out door)) return;
+
+        enemyState = moveEnemy.GetEnemyState();
         if (!door.isOpen)
         {
             door.UseEnemy(moveEnemy);
@@ -23,8 +26,10 @@ public class EnemyOpenDoor : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out door)) return;
-        door.CloseDoor();
-        moveEnemy.SetEnemyState(EnemyState.Patrol);
+            door.CloseDoor();
+        
+        moveEnemy.SetEnemyState(enemyState);
+
         door = null;
     }
 }

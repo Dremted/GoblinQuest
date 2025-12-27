@@ -6,9 +6,11 @@ using UnityEngine;
 public class Door : MonoBehaviour, IInteract
 {
     [SerializeField] private LayerMask playerLayerMask;
+    
     [SerializeField] private Transform nextDoor;
     public Transform NextDoor => nextDoor;
     private Player player;
+    private EnemyState enemyState;
     public bool isOpen {  get; private set ; }
 
     public void Interact(Player player)
@@ -20,11 +22,19 @@ public class Door : MonoBehaviour, IInteract
     {
         if ((playerLayerMask.value & 1 << collision.gameObject.layer) > 0)
         {
-            Debug.Log("player");
             player = collision.gameObject.GetComponent<Player>();
             if (player == null) return;
             
             player.SetInteractable(this);
+        }
+        if(!collision.TryGetComponent<MoveEnemy>(out MoveEnemy enemy)) return;
+
+        enemyState = enemy.GetEnemyState();
+        if(enemyState == EnemyState.Call)
+        {
+            enemy.SetEnemyState(EnemyState.UseVerticalDoor);
+            enemy.transform.position = nextDoor.position;
+ 
         }
     }
 
@@ -34,6 +44,8 @@ public class Door : MonoBehaviour, IInteract
         if (player == null) return;
 
         player.ClearInteractable(this);
+
+        if (!collision.TryGetComponent<MoveEnemy>(out MoveEnemy enemy)) return;
     }
     
     public void SetFalg(bool value)

@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public PlayerState currentPlayerState { get; private set; }
 
     private Door currentDoor;
-    private NotWallDoor notWallDoor;
+    private HorizontalDoor notWallDoor;
 
     [SerializeField] private Inventory inventory;
 
@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
             {
                 ResetVisuals(); 
                 currentInteract = rayInteract;
-                if (currentInteract is NotWallDoor door && !door.isOpen) door.SetHighlighted(true);
+                if (currentInteract is HorizontalDoor door && !door.isOpen) door.SetHighlighted(true);
             }
         }
         else
@@ -132,10 +132,9 @@ public class Player : MonoBehaviour
 
     private void ResetVisuals()
     {
-        if (currentInteract is NotWallDoor door )
+        if (currentInteract is HorizontalDoor door )
         {
-            if(door.isOpen)
-                door.SetHighlighted(false);
+            door.SetHighlighted(false);
         }
     }
 

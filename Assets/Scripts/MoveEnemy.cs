@@ -6,7 +6,9 @@ public class MoveEnemy : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float openDoorSpeed = 3f;
+    [SerializeField] private float runSpeed = 12f;
     [SerializeField] private EnemyState currentState;
+    [SerializeField] private Transform callPoint;
 
     private Vector2 moveDir;
     private Transform nextPoint;
@@ -24,6 +26,8 @@ public class MoveEnemy : MonoBehaviour
     {
         switch (currentState)
         {
+            case EnemyState.UseVerticalDoor:
+                
             case EnemyState.Sleep:
                 rb.velocity = Vector2.zero;
                 IsWalking = false;
@@ -37,6 +41,9 @@ public class MoveEnemy : MonoBehaviour
                 break;
             case EnemyState.Patrol:
                 Move();
+                break;
+            case EnemyState.Call:
+                Call();
                 break;
         }
     }
@@ -58,6 +65,17 @@ public class MoveEnemy : MonoBehaviour
         }
         IsWalking = true;
         RotateEnemy();
+    }
+
+    private void Call()
+    {
+        if(callPoint != null)
+        {
+            nextPoint = null;
+            moveDir = callPoint.position - transform.position;
+            rb.velocity = moveDir.normalized * runSpeed;
+            IsWalking = true;
+        }
     }
 
     private void RotateEnemy()
@@ -82,6 +100,11 @@ public class MoveEnemy : MonoBehaviour
         nextPoint = point;
     }
 
+    public void SetNextCallPoint(Transform point)
+    {
+        callPoint = point;
+    }
+
     public EnemyState GetEnemyState()
     {
         return currentState;
@@ -93,5 +116,7 @@ public enum EnemyState
     Patrol,
     Gotcha,
     UseDoor,
-    Sleep
+    Sleep,
+    Call,
+    UseVerticalDoor
 }
