@@ -9,7 +9,8 @@ public class MoveEnemy : MonoBehaviour
     [SerializeField] private float runSpeed = 12f;
     [SerializeField] private EnemyState currentState;
     [SerializeField] private Transform callPoint;
-
+    
+    private Transform nextVetticalDoor;
     private Vector2 moveDir;
     private Transform nextPoint;
     private Rigidbody2D rb;
@@ -27,7 +28,8 @@ public class MoveEnemy : MonoBehaviour
         switch (currentState)
         {
             case EnemyState.UseVerticalDoor:
-                
+                UseVerticalDoor();
+                break;
             case EnemyState.Sleep:
                 rb.velocity = Vector2.zero;
                 IsWalking = false;
@@ -108,6 +110,16 @@ public class MoveEnemy : MonoBehaviour
     public EnemyState GetEnemyState()
     {
         return currentState;
+    }
+
+    private void UseVerticalDoor()
+    {
+        transform.position = nextVetticalDoor.position;
+    }
+
+    public void SetNextVerticalDoor(Transform point)
+    {
+        nextVetticalDoor = point;
     }
 }
 public enum EnemyState
