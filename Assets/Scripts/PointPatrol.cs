@@ -30,6 +30,8 @@ public class PointPatrol : MonoBehaviour
     {
         if (!collision.TryGetComponent(out MoveEnemy moveEnemy)) return;
 
+        if (moveEnemy.GetEnemyState() == EnemyState.Sleep) return;
+
         currentEnemy = moveEnemy;
         timerIdle = 0f;
 

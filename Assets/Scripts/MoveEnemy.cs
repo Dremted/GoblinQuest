@@ -14,9 +14,7 @@ public class MoveEnemy : MonoBehaviour
     private Vector2 moveDir;
     private Transform nextPoint;
     private Rigidbody2D rb;
-
-
-    public bool IsWalking { get; private set; }
+    public EnemyState CurrentState => currentState;
 
     private void Awake()
     {
@@ -32,11 +30,11 @@ public class MoveEnemy : MonoBehaviour
                 break;
             case EnemyState.Sleep:
                 rb.velocity = Vector2.zero;
-                IsWalking = false;
+
                 break;
             case EnemyState.Idle:
                 rb.velocity = Vector2.zero;
-                IsWalking = false;
+
                 break;
             case EnemyState.UseDoor:
                 UseDoor();
@@ -54,7 +52,7 @@ public class MoveEnemy : MonoBehaviour
     {
         moveDir = nextPoint.position - transform.position;
         rb.velocity = moveDir.normalized * MoveSpeed;
-        IsWalking = true;
+
         RotateEnemy();
     }
 
@@ -65,7 +63,6 @@ public class MoveEnemy : MonoBehaviour
             moveDir = nextPoint.position - transform.position;
             rb.velocity = moveDir.normalized * openDoorSpeed;
         }
-        IsWalking = true;
         RotateEnemy();
     }
 
@@ -76,7 +73,6 @@ public class MoveEnemy : MonoBehaviour
             nextPoint = null;
             moveDir = callPoint.position - transform.position;
             rb.velocity = moveDir.normalized * runSpeed;
-            IsWalking = true;
         }
     }
 
@@ -124,11 +120,11 @@ public class MoveEnemy : MonoBehaviour
 }
 public enum EnemyState
 {
-    Idle,
-    Patrol,
-    Gotcha,
-    UseDoor,
-    Sleep,
-    Call,
-    UseVerticalDoor
+    Idle = 0,
+    Patrol = 1,
+    Gotcha = 2,
+    UseDoor = 3,
+    Sleep = 4,
+    Call = 5,
+    UseVerticalDoor = 6
 }

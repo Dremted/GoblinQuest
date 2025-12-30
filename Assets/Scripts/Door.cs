@@ -40,7 +40,7 @@ public class Door : MonoBehaviour, IInteract
 
     }
     
-    public void SetFalg(bool value)
+    public void SetFlag(bool value)
     {
         isOpen = value;
     }

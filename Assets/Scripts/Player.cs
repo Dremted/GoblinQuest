@@ -40,6 +40,11 @@ public class Player : MonoBehaviour
         gameInput.OnInteract += GameInput_Interact;
     }
 
+    private void OnDisable()
+    {
+        gameInput.OnInteract -= GameInput_Interact;
+    }
+
     private void GameInput_Interact(object sender, EventArgs e)
     {
         if (currentPlayerState != PlayerState.Idle && currentPlayerState != PlayerState.Move)
@@ -57,21 +62,33 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentPlayerState == PlayerState.Move)
-            rb.velocity = moveDirection.normalized * moveSpeed;
-        else
-            rb.velocity = Vector2.zero;
+        rb.velocity = currentPlayerState == PlayerState.Move
+            ?moveDirection.normalized * moveSpeed 
+            : rb.velocity = Vector2.zero;
+            
     }
 
     private void PlayerMove()
     {
+        ReadInput();
+
+        UpdateMoveState();
+
+        RotatePlayer();
+    }
+
+    private void ReadInput()
+    {
         moveDirection = gameInput.GetInputMove();
 
         moveDirection.y = 0;
+    }
 
-        if(moveDirection != Vector2.zero)
+    private void UpdateMoveState()
+    {
+        if (moveDirection != Vector2.zero)
         {
-            if(currentPlayerState == PlayerState.SetTrap)
+            if (currentPlayerState == PlayerState.SetTrap)
             {
                 PlayerStopInteract();
             }
@@ -86,8 +103,6 @@ public class Player : MonoBehaviour
                 IsWalking = false;
             }
         }
-
-            RotatePlayer();
     }
 
     private void RotatePlayer()
@@ -123,7 +138,7 @@ public class Player : MonoBehaviour
                 if (currentInteract is HorizontalDoor door && !door.isOpen) door.SetHighlighted(true);
             }
         }
-        else
+        else if(currentInteract != triggerInteract)
         {
             ResetVisuals();
             currentInteract = triggerInteract;
@@ -173,7 +188,7 @@ public class Player : MonoBehaviour
 
         currentDoor = door;
         currentPlayerState = PlayerState.EnterDoor;
-        currentDoor.SetFalg(true);
+        currentDoor.SetFlag(true);
         IsWalking = false;
     }
 
@@ -187,7 +202,7 @@ public class Player : MonoBehaviour
 
     public void OnDoorExitFinished()
     {
-        currentDoor.SetFalg(false);
+        currentDoor.SetFlag(false);
         currentDoor = null;
         currentPlayerState = PlayerState.Idle;
     }

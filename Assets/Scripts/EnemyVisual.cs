@@ -5,25 +5,19 @@ using UnityEngine;
 public class EnemyVisual : MonoBehaviour
 {
     private Animator animator;
-    private MoveEnemy moveEnemy;
+    private MoveEnemy enemy;
+
+    private static readonly int StateHash = Animator.StringToHash("State");
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        moveEnemy = GetComponentInParent<MoveEnemy>();
-        animator.SetBool(AnimationString.isWalking, moveEnemy.IsWalking);
+        enemy = GetComponentInParent<MoveEnemy>();
     }
 
     private void Update()
     {
-        switch (moveEnemy.GetEnemyState())
-        {
-            case EnemyState.Patrol:
-                animator.SetBool(AnimationString.isWalking, moveEnemy.IsWalking);
-                break;
-            case EnemyState.Idle:
-                animator.SetBool(AnimationString.isWalking, moveEnemy.IsWalking);
-                break;
-        }
+        animator.SetInteger(StateHash, (int)enemy.CurrentState);
     }
 }
+
