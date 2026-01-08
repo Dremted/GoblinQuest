@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,9 @@ public class EnemyOpenDoor : MonoBehaviour
 {
     private MoveEnemy moveEnemy;
     private HorizontalDoor door;
-    private EnemyState enemyState;
+
+    public event EventHandler OnOpenDoor;
+    public event EventHandler OnCloseDoor;
 
     private void Awake()
     {
@@ -16,9 +19,9 @@ public class EnemyOpenDoor : MonoBehaviour
     {
         if (!collision.TryGetComponent(out door)) return;
 
-        enemyState = moveEnemy.GetEnemyState();
         if (!door.isOpen)
         {
+            OnOpenDoor?.Invoke(this, EventArgs.Empty);
             door.UseEnemy(moveEnemy);
         }
     }
@@ -26,9 +29,9 @@ public class EnemyOpenDoor : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out door)) return;
-            door.CloseDoor();
-        
-        moveEnemy.SetEnemyState(enemyState);
+        door.CloseDoor();
+
+        OnCloseDoor.Invoke(this, EventArgs.Empty);
 
         door = null;
     }

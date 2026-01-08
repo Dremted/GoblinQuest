@@ -54,8 +54,6 @@ public class HorizontalDoor : MonoBehaviour, IInteract
     public void UseEnemy(MoveEnemy moveEnemy)
     {
         enemy = moveEnemy;
-        
-        enemy.SetEnemyState(EnemyState.UseDoor);
 
         currentStateDoor = StateDoor.Open;
         colDoor.gameObject.SetActive(false);

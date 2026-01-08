@@ -11,7 +11,7 @@ public class CallPoint : MonoBehaviour
         if (!collision.TryGetComponent<MoveEnemy>(out MoveEnemy enemy)) return;
 
         if (nextCallPont != null)
-            enemy.SetEnemyState(EnemyState.Call);
+            //enemy.SetEnemyState(EnemyState.Call);
             enemy.SetNextCallPoint(nextCallPont);
     }
 }

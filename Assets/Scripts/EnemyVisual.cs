@@ -19,5 +19,15 @@ public class EnemyVisual : MonoBehaviour
     {
         animator.SetInteger(StateHash, (int)enemy.CurrentState);
     }
+
+    public void EnterVerticalDoor()
+    {
+        enemy.EnterVerticalDoor();
+    }
+
+    public void ExitVerticalDoorCall()
+    {
+        enemy.ExitVerticalDoorCall();
+    }
 }
 
