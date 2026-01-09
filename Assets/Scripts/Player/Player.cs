@@ -28,6 +28,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Inventory inventory;
 
+
+    public event EventHandler OnActiveRoom;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -172,7 +175,7 @@ public class Player : MonoBehaviour
             case PlayerState.ExitDoor:
             case PlayerState.EnterHide:
             case PlayerState.ExitHide:
-
+            case PlayerState.Gotcha:
                 break;
         }
     }
@@ -223,10 +226,21 @@ public class Player : MonoBehaviour
         IsSetTrap = true;
     }
 
+    public void PlayerGotcha()
+    {
+        SetPlayerState(PlayerState.Gotcha);
+    }
+
     public void PlayerHide(Transform placeTransform)
     {
         currentPlayerState = PlayerState.EnterHide;
         transform.position = placeTransform.position;
+    }
+
+    public void PlayerExitHide()
+    {
+        currentPlayerState = PlayerState.Idle;
+        OnActiveRoom?.Invoke(this, EventArgs.Empty);
     }
 
     public void PlayerStopInteract()
@@ -251,4 +265,5 @@ public enum PlayerState
     OpenDoor,
     EnterHide,
     ExitHide,
+    Gotcha
 }

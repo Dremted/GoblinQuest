@@ -9,12 +9,14 @@ public class MoveEnemy : MonoBehaviour
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float openDoorSpeed = 3f;
     [SerializeField] private float runSpeed = 12f;
+    [SerializeField] private float distanceGotcha = 1f;
     [SerializeField] private EnemyState currentState;
     [SerializeField] private Transform callPoint;
     [SerializeField] private Transform currentPointPatrol;
     [SerializeField] private Transform offCallPoint;
     [SerializeField] private Transform exitDoorPatrol;
     [SerializeField] private CallEnemy callEnemy;
+
 
     private Transform nextVetticalDoor;
     private Vector2 moveDir;
@@ -189,7 +191,10 @@ public class MoveEnemy : MonoBehaviour
     private void Gotcha()
     {
         Vector2 target = (targetPlayer.position - transform.position).normalized;
-        rb.velocity = target * MoveSpeed;
+        if (Vector2.Distance(targetPlayer.position, transform.position) < distanceGotcha)
+            rb.velocity = Vector2.zero;
+        else
+            rb.velocity = target * MoveSpeed;
     }
 
     private void RotateEnemy()
@@ -251,11 +256,12 @@ public class MoveEnemy : MonoBehaviour
 
     public void GotchaEnemy(Transform playerTransfrom)
     {
-        if(currentState == EnemyState.Gotcha)
+        if (currentState == EnemyState.Gotcha && currentState == EnemyState.ExitVerticalDoor)
             return;
         Debug.Log("GOTCHA!");
         targetPlayer = playerTransfrom;
         currentState = EnemyState.Gotcha;
+
     }
 
     private void OffCall()

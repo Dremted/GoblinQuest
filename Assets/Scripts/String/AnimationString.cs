@@ -10,4 +10,6 @@ public static class AnimationString
     public static string SetTrap = "SetTrap";
     public static string isOpen = "isOpen";
     public static string isSleep = "isSleep";
+    public static string EnterHide = "EnterHide";
+    public static string ExitHide = "ExitHide";
 }

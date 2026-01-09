@@ -25,12 +25,27 @@ public class RoomDiscover : MonoBehaviour
         CheckGotcha();
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out MoveEnemy enemy))
+        {
+            enemiesInRoom.Remove(enemy);
+        }
+
+
+        if (collision.TryGetComponent(out Player player))
+        {
+            playerInRoom.Remove(player);
+        }
+    }
+
     private void CheckGotcha()
     {
         if(playerInRoom.Count > 0 && enemiesInRoom.Count > 0)
         {
             
             enemiesInRoom[0].GotchaEnemy(playerInRoom[0].transform);
+            playerInRoom[0].PlayerGotcha();
         }
     }
 }
