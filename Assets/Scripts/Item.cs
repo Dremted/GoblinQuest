@@ -16,18 +16,18 @@ public class Item : MonoBehaviour, IInteract
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.TryGetComponent(out Player player)) return;
-        {
+        
             player.SetInteractable(this);
             selectedItem.gameObject.SetActive(true);
-        }
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.gameObject.TryGetComponent(out Player player)) return;
-        {
+        
             player.ClearInteractable(this);
             selectedItem.gameObject.SetActive(false);
-        }
+        
     }
 }

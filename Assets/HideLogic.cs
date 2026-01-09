@@ -2,17 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HideLogic : MonoBehaviour
+public class HideLogic : MonoBehaviour, IInteract
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform selectedPlace;
+    [SerializeField] private Transform roomDiscover;
+
+    public void Interact(Player player)
     {
-        
+        if (player.currentPlayerState == PlayerState.ExitHide)
+        {
+            roomDiscover.gameObject.SetActive(true);
+        }
+        else
+        {
+            roomDiscover.gameObject.SetActive(false);
+            selectedPlace.gameObject.SetActive(false);
+            player.PlayerHide(this.transform);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (!collision.gameObject.TryGetComponent(out Player player)) return;
+
+        player.SetInteractable(this);
+        selectedPlace.gameObject.SetActive(true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.gameObject.TryGetComponent(out Player player)) return;
+
+        player.ClearInteractable(this);
+        selectedPlace.gameObject.SetActive(false);
     }
 }

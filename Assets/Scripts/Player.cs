@@ -25,7 +25,6 @@ public class Player : MonoBehaviour
     public PlayerState currentPlayerState { get; private set; }
 
     private Door currentDoor;
-    private HorizontalDoor notWallDoor;
 
     [SerializeField] private Inventory inventory;
 
@@ -47,10 +46,15 @@ public class Player : MonoBehaviour
 
     private void GameInput_Interact(object sender, EventArgs e)
     {
-        if (currentPlayerState != PlayerState.Idle && currentPlayerState != PlayerState.Move)
+        if (currentPlayerState != PlayerState.Idle && currentPlayerState != PlayerState.Move && currentPlayerState != PlayerState.EnterHide)
             return;
 
-        currentInteract?.Interact(this);
+        if(currentPlayerState == PlayerState.EnterHide)
+        {
+            currentPlayerState = PlayerState.ExitHide;
+        }
+        else
+            currentInteract?.Interact(this);
     }
 
     private void Update()
@@ -166,7 +170,9 @@ public class Player : MonoBehaviour
             case PlayerState.OpenDoor:
             case PlayerState.EnterDoor:
             case PlayerState.ExitDoor:
-            
+            case PlayerState.EnterHide:
+            case PlayerState.ExitHide:
+
                 break;
         }
     }
@@ -195,7 +201,6 @@ public class Player : MonoBehaviour
     public void OnDoorEntered()
     {
         if (currentDoor == null) return;
-        Debug.Log("player check");
         transform.position = currentDoor.NextDoor.position;
         currentPlayerState = PlayerState.ExitDoor;
     }
@@ -218,6 +223,12 @@ public class Player : MonoBehaviour
         IsSetTrap = true;
     }
 
+    public void PlayerHide(Transform placeTransform)
+    {
+        currentPlayerState = PlayerState.EnterHide;
+        transform.position = placeTransform.position;
+    }
+
     public void PlayerStopInteract()
     {
         currentPlayerState = PlayerState.Idle;
@@ -227,6 +238,7 @@ public class Player : MonoBehaviour
     public void SetPlayerState(PlayerState playerState)
     {
         currentPlayerState = playerState;
+
     }
 }
 public enum PlayerState
@@ -236,5 +248,7 @@ public enum PlayerState
     EnterDoor,
     ExitDoor,
     SetTrap,
-    OpenDoor
+    OpenDoor,
+    EnterHide,
+    ExitHide,
 }
