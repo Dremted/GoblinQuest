@@ -39,6 +39,9 @@ public class PlayerVisual : MonoBehaviour
             case PlayerState.ExitHide:
                 animator.SetTrigger(AnimationString.ExitHide);
                 break;
+            case PlayerState.GetItem:
+                animator.SetTrigger(AnimationString.GetItem);
+                break;
         }
 
         lastState = player.currentPlayerState;
@@ -54,9 +57,9 @@ public class PlayerVisual : MonoBehaviour
         player.OnDoorExitFinished();
     }
 
-    public void OnHideEntered()
+    public void OnItemGeting()
     {
-
+        player.ItemGetting();
     }
 
     public void OnHideExit()

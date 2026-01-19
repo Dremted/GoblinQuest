@@ -22,9 +22,16 @@ public class Trap : MonoBehaviour, IInteract
     private float timerSetTrap = 0;
     [SerializeField] private float timerSetTrapMax;
 
+    [Header("Trigger")]
+    [SerializeField] private TriggerTrap triggerTrap;
+    [SerializeField] private Transform triggerCol;
+
+    [SerializeField] private Transform nextTrap;
+
     private Player currentPlayer;
     private TrapState currentTrapState;
     private Collider2D col;
+    private Animator animator;
 
     public void Interact(Player player)
     {
@@ -45,16 +52,28 @@ public class Trap : MonoBehaviour, IInteract
     {
         currentTrapState = TrapState.NotReady;
         col = GetComponent<Collider2D>();
+        animator = Set_Trap.GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
         inventory.OnGetItem += ReadySet;
+        triggerTrap.OnActiveTrap += Trap_OnActiveTrap;
+        triggerTrap.OnNextTrap += Trap_OnNextTrap;
+
+        if(inventory.HasInventory(itemSO))
+        {
+            currentTrapState = TrapState.Ready;
+        }
     }
+
+
 
     private void OnDisable()
     {
         inventory.OnGetItem -= ReadySet;
+        triggerTrap.OnActiveTrap -= Trap_OnActiveTrap;
+        triggerTrap.OnNextTrap -= Trap_OnNextTrap;
     }
 
     public void ReadySet(object sender, Inventory.EventArgsItem e)
@@ -65,12 +84,29 @@ public class Trap : MonoBehaviour, IInteract
         }
     }
 
+    private void Trap_OnActiveTrap(object sender, EventArgs e)
+    {
+        currentTrapState = TrapState.Active;
+
+    }
+
+    private void Trap_OnNextTrap(object sender, EventArgs e)
+    {
+        if(nextTrap != null)
+        {
+            nextTrap.gameObject.SetActive(true);
+        }
+    }
+
     private void Update()
     {
         switch (currentTrapState)
         {
             case TrapState.UpdateSet:
                 SetTrap();
+                break;
+            case TrapState.Active:
+                ActiveTrap();
                 break;
         }
     }
@@ -98,6 +134,7 @@ public class Trap : MonoBehaviour, IInteract
             OnStopSetTrap?.Invoke(this, EventArgs.Empty);
             inventory.DeleteItem(itemSO);
             col.enabled = false;
+            triggerCol.gameObject.SetActive(true);
         }        
     }
 
@@ -110,6 +147,10 @@ public class Trap : MonoBehaviour, IInteract
         OnStopSetTrap?.Invoke(this, EventArgs.Empty);
     }
 
+    private void ActiveTrap()
+    {
+        animator.SetTrigger(AnimationString.ActiveTrap);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -139,6 +180,7 @@ public class Trap : MonoBehaviour, IInteract
         NotReady,
         Ready,
         UpdateSet,
-        Set
+        Set,
+        Active
     }
 }

@@ -9,6 +9,7 @@ public class Item : MonoBehaviour, IInteract
 
     public void Interact(Player player)
     {
+        player.GetItem();
         player.AddItemInventory(itemsSO);
         Destroy(gameObject);
     }

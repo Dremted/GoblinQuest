@@ -11,16 +11,18 @@ public class Player : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float distanceRay = 1f;
+    [SerializeField] private float speedCamera = 12f;
     [SerializeField] private LayerMask doorLayerMask;
-    
+    [SerializeField] private Transform cameraAnchor;
+    [SerializeField] private Transform colDiscover;
+
     private Rigidbody2D rb;
     private Vector2 moveDirection;
-    public bool IsWalking { get; private set;}
 
+    public bool IsWalking { get; private set;}
     public bool IsSetTrap {  get; private set;}
 
     private IInteract currentInteract;
-
     private IInteract triggerInteract;
     public PlayerState currentPlayerState { get; private set; }
 
@@ -28,13 +30,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Inventory inventory;
 
-
     public event EventHandler OnActiveRoom;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         currentPlayerState = PlayerState.Idle;
+        
     }
 
     private void OnEnable()
@@ -77,11 +79,36 @@ public class Player : MonoBehaviour
 
     private void PlayerMove()
     {
-        ReadInput();
+        if (gameInput.CameraMode())
+        {
+            MoveCameraAnchor();
 
-        UpdateMoveState();
+            UpdateMoveState();
+            rb.velocity = Vector2.zero;
+        }
+        else
+        {
+            RemoveCamera();
 
-        RotatePlayer();
+            ReadInput();
+
+            UpdateMoveState();
+
+            RotatePlayer();
+        }
+    }
+
+    private void RemoveCamera()
+    {
+        cameraAnchor.position = Vector3.Lerp(cameraAnchor.position, transform.position, Time.deltaTime * 5f);
+    }
+
+    private void MoveCameraAnchor()
+    {
+        Vector2 moveVector = gameInput.GetInputMove();
+        Vector3 moveCamera = new Vector3(moveVector.x, moveVector.y, 0) * speedCamera * Time.deltaTime;
+
+        cameraAnchor.Translate(moveCamera, Space.World);
     }
 
     private void ReadInput()
@@ -170,10 +197,19 @@ public class Player : MonoBehaviour
             case PlayerState.SetTrap:
                 PlayerMove();
                 break;
+            case PlayerState.EnterHide:
+                if(gameInput.CameraMode())
+                {
+                    MoveCameraAnchor();
+                }
+                else
+                {
+                    RemoveCamera();
+                }
+                    break;
             case PlayerState.OpenDoor:
             case PlayerState.EnterDoor:
             case PlayerState.ExitDoor:
-            case PlayerState.EnterHide:
             case PlayerState.ExitHide:
             case PlayerState.Gotcha:
                 break;
@@ -220,6 +256,16 @@ public class Player : MonoBehaviour
         inventory.AddInventory(itemsSO);
     }
 
+    public void GetItem()
+    {
+        currentPlayerState = PlayerState.GetItem;
+    }
+
+    public void ItemGetting()
+    {
+        currentPlayerState = PlayerState.Idle;  
+    }
+
     public void PlayerSetTrap()
     {
         currentPlayerState = PlayerState.SetTrap;
@@ -229,6 +275,7 @@ public class Player : MonoBehaviour
     public void PlayerGotcha()
     {
         SetPlayerState(PlayerState.Gotcha);
+        colDiscover.gameObject.SetActive(true);
     }
 
     public void PlayerHide(Transform placeTransform)
@@ -265,5 +312,6 @@ public enum PlayerState
     OpenDoor,
     EnterHide,
     ExitHide,
-    Gotcha
+    Gotcha,
+    GetItem
 }

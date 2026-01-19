@@ -68,4 +68,16 @@ public class Inventory : MonoBehaviour
             UpdateVisual();
         }
     }
+
+    public bool HasInventory(ItemsSO item)
+    {
+        foreach (var itemInventory in itemsSOList)
+        {
+            if (itemInventory == item)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

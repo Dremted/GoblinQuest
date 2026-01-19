@@ -10,14 +10,14 @@ public class MoveEnemy : MonoBehaviour
     [SerializeField] private float openDoorSpeed = 3f;
     [SerializeField] private float runSpeed = 12f;
     [SerializeField] private float distanceGotcha = 1f;
+
     [SerializeField] private EnemyState currentState;
     [SerializeField] private Transform callPoint;
     [SerializeField] private Transform currentPointPatrol;
     [SerializeField] private Transform offCallPoint;
     [SerializeField] private Transform exitDoorPatrol;
     [SerializeField] private CallEnemy callEnemy;
-
-
+    
     private Transform nextVetticalDoor;
     private Vector2 moveDir;
     private Transform nextPointPatrol;
@@ -28,7 +28,9 @@ public class MoveEnemy : MonoBehaviour
     private EnemyState lastState;
     private bool isDoorVertical;
     private Transform targetPlayer;
-
+    private bool isDie;
+    private Transform currentTrap;
+    private bool isGotcha = false;
     public float maxTimerOffCall = 2f;
     private float timerOffCall;
 
@@ -38,8 +40,7 @@ public class MoveEnemy : MonoBehaviour
     public EnemyState CurrentState => currentState;
 
     public event EventHandler OnCallDiactive;
-
-
+    
 
     private void Awake()
     {
@@ -86,40 +87,49 @@ public class MoveEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentState == EnemyState.Gotcha)
+        if (currentState == EnemyState.Die)
         {
-            Gotcha();
             return;
         }
-        switch (currentState)
+        if (!isDie)
         {
-            case EnemyState.Idle:
-                Idle();
-                break;
+            if (currentState == EnemyState.Gotcha)
+            {
+                Gotcha();
+                return;
+            }
+            switch (currentState)
+            {
+                case EnemyState.Idle:
+                    Idle();
+                    break;
 
-            case EnemyState.Patrol:
-                Patrol();
-                break;
+                case EnemyState.Patrol:
+                    Patrol();
+                    break;
 
-            case EnemyState.EnterVerticalDoor:
-                rb.velocity = Vector2.zero;
-                break;
+                case EnemyState.EnterVerticalDoor:
+                    Stop();
+                    break;
 
-            case EnemyState.Sleep:
-                rb.velocity = Vector2.zero;
-                break;
+                case EnemyState.Sleep:
+                    Stop();
+                    break;
 
-            case EnemyState.UseDoor:
-                UseDoor();
-                break;
+                case EnemyState.UseDoor:
+                    UseDoor();
+                    break;
 
-            case EnemyState.Call:
-                Call();
-                break;
-            case EnemyState.OffCall:
-                OffCall();
-                break;
-
+                case EnemyState.Call:
+                    Call();
+                    break;
+                case EnemyState.OffCall:
+                    OffCall();
+                    break;
+                case EnemyState.OnTrap:
+                    Stop();
+                    break;
+            }
         }
     }
 
@@ -158,6 +168,11 @@ public class MoveEnemy : MonoBehaviour
 
     }
 
+    private void Stop()
+    {
+        rb.velocity = Vector2.zero;
+    }
+
     private void UseDoor()
     {
         if (!CallState)
@@ -192,7 +207,10 @@ public class MoveEnemy : MonoBehaviour
     {
         Vector2 target = (targetPlayer.position - transform.position).normalized;
         if (Vector2.Distance(targetPlayer.position, transform.position) < distanceGotcha)
+        {
             rb.velocity = Vector2.zero;
+
+        }
         else
             rb.velocity = target * MoveSpeed;
     }
@@ -208,8 +226,6 @@ public class MoveEnemy : MonoBehaviour
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
-
-
 
     public void SetNextPointParametrs(Transform point, float timeIdle)
     {
@@ -236,11 +252,18 @@ public class MoveEnemy : MonoBehaviour
 
     public void ExitVerticalDoorCall()
     {
-        currentState = lastState;
-
-        if(currentState == EnemyState.Patrol)
+        if (isGotcha)
         {
-            currentPointPatrol = exitDoorPatrol;
+            currentState = EnemyState.Gotcha;
+        }
+        else
+        {
+            currentState = lastState;
+
+            if (currentState == EnemyState.Patrol)
+            {
+                currentPointPatrol = exitDoorPatrol;
+            }
         }
     }
 
@@ -256,12 +279,16 @@ public class MoveEnemy : MonoBehaviour
 
     public void GotchaEnemy(Transform playerTransfrom)
     {
-        if (currentState == EnemyState.Gotcha && currentState == EnemyState.ExitVerticalDoor)
+        if (currentState == EnemyState.Gotcha)
             return;
-        Debug.Log("GOTCHA!");
+        isGotcha = true;
         targetPlayer = playerTransfrom;
-        currentState = EnemyState.Gotcha;
+        if (!isDie && currentState != EnemyState.ExitVerticalDoor)
+        {
+            Debug.Log("GOTCHA!");
 
+            currentState = EnemyState.Gotcha;
+        }
     }
 
     private void OffCall()
@@ -291,6 +318,29 @@ public class MoveEnemy : MonoBehaviour
 
         currentState = newState;
     }
+
+    public void Die()
+    {
+        gameObject.layer = LayerMask.NameToLayer("DeadEnemy");
+        Debug.Log("Die");
+        currentState = EnemyState.Die;
+        rb.velocity = Vector2.zero;
+        isDie = true;
+        rb.bodyType = RigidbodyType2D.Static;
+    }
+
+    public void OnTrap(Transform triggerTrapTransform)
+    {
+        lastState = currentState;
+        currentState = EnemyState.OnTrap;
+        currentTrap = triggerTrapTransform.parent;
+    }
+
+    public void OutTrap()
+    {
+        currentTrap.gameObject.SetActive(false);
+        currentState = lastState;
+    }
 }
 public enum EnemyState
 {
@@ -303,4 +353,6 @@ public enum EnemyState
     EnterVerticalDoor = 6,
     ExitVerticalDoor = 7,
     OffCall = 8,
+    Die = 9,
+    OnTrap = 10
 }

@@ -29,5 +29,10 @@ public class EnemyVisual : MonoBehaviour
     {
         enemy.ExitVerticalDoorCall();
     }
+
+    public void OutTrap()
+    {
+        enemy.OutTrap();
+    }
 }
 
