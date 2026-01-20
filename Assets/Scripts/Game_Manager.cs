@@ -68,6 +68,11 @@ public class Game_Manager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void NextLevel()
     {
 
