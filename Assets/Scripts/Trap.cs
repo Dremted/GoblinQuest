@@ -1,8 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
+/***Responsible for the visual display and installation of the trap.
+A separate trigger object is responsible for triggering.
+The progress bar is a separate script on the same object.***/
 public class Trap : MonoBehaviour, IInteract
 {
     public event EventHandler OnStartSetTrap;
@@ -26,13 +31,19 @@ public class Trap : MonoBehaviour, IInteract
     [SerializeField] private TriggerTrap triggerTrap;
     [SerializeField] private Transform triggerCol;
 
+    [Header("Related objects")]
     [SerializeField] private Transform nextTrap;
+    [SerializeField] private Transform clueObject;
 
     private Player currentPlayer;
     private TrapState currentTrapState;
     private Collider2D col;
     private Animator animator;
 
+    
+    //Checking conditions.Disabling visual selection.
+    //Changing the trap status to settable.
+    //Calling the timer, setting the time.
     public void Interact(Player player)
     {
         if (currentTrapState != TrapState.Ready) return;
@@ -65,9 +76,9 @@ public class Trap : MonoBehaviour, IInteract
         {
             currentTrapState = TrapState.Ready;
         }
+        if(clueObject != null)
+            clueObject.gameObject.SetActive(true);
     }
-
-
 
     private void OnDisable()
     {
@@ -81,13 +92,15 @@ public class Trap : MonoBehaviour, IInteract
         if (itemSO == e.Item)
         {
             currentTrapState = TrapState.Ready;
+            col.enabled = true;
+            if (clueObject != null)
+                clueObject.gameObject.SetActive(false);
         }
     }
 
     private void Trap_OnActiveTrap(object sender, EventArgs e)
     {
         currentTrapState = TrapState.Active;
-
     }
 
     private void Trap_OnNextTrap(object sender, EventArgs e)
@@ -158,6 +171,7 @@ public class Trap : MonoBehaviour, IInteract
 
         player.SetInteractable(this);
 
+
         if (currentTrapState != TrapState.Ready) return;
         Selected_Trap.gameObject.SetActive(true);
 
@@ -171,9 +185,7 @@ public class Trap : MonoBehaviour, IInteract
 
         if (currentTrapState != TrapState.Ready) return;
         Selected_Trap.gameObject.SetActive(false);
-
     }
-
 
     public enum TrapState
     {

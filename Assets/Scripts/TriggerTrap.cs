@@ -13,6 +13,7 @@ public class TriggerTrap : MonoBehaviour
 
     [SerializeField] private TrapType trapType;
     [SerializeField] private Transform itemNextTrap;
+    [SerializeField] private Game_Manager gameManager;
 
     public event EventHandler OnNextTrap;
     public event EventHandler OnActiveTrap;
@@ -27,6 +28,7 @@ public class TriggerTrap : MonoBehaviour
             if (trapType == TrapType.Killer)
             {
                 enemy.Die();
+                gameManager.CompleteGame();
             }
             else
             {

@@ -6,20 +6,19 @@ using UnityEngine;
 public class Door : MonoBehaviour, IInteract
 {
     [SerializeField] private LayerMask playerLayerMask;
-    
     [SerializeField] private Transform nextDoor;
+
+
     public Transform NextDoor => nextDoor;
     private Player player;
 
-    public bool isOpen {  get; private set ; }
-
-
+    //The player enters the "Enter Door" state
     public void Interact(Player player)
     {
         player.EnterDoor(this);
-        
     }
 
+    //Sets doors to interactive objects for the player
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if ((playerLayerMask.value & 1 << collision.gameObject.layer) > 0)
@@ -30,7 +29,7 @@ public class Door : MonoBehaviour, IInteract
             player.SetInteractable(this);
         }
     }
-
+    //Dlete doors to interactive objects for the player
     private void OnTriggerExit2D(Collider2D collision)
     {
         player = collision.gameObject.GetComponent<Player>();
@@ -38,11 +37,6 @@ public class Door : MonoBehaviour, IInteract
 
         player.ClearInteractable(this);
 
-    }
-    
-    public void SetFlag(bool value)
-    {
-        isOpen = value;
     }
 }
 

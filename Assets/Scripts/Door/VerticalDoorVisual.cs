@@ -12,9 +12,4 @@ public class VerticalDoorVisual : MonoBehaviour
         animator = GetComponent<Animator>();
         door = GetComponentInParent<Door>();
     }
-
-    private void Update()
-    {
-        animator.SetBool(AnimationString.isOpen, door.isOpen);
-    }
 }

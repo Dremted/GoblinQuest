@@ -7,10 +7,14 @@ using UnityEngine.SceneManagement;
 public class Game_Manager : MonoBehaviour
 {
     [SerializeField] private Transform menu;
-    [SerializeField] private Transform GameOverWindow;
+    [SerializeField] private Transform gameOverWindow;
+    [SerializeField] private Transform nextLevelWindow;
+
     [SerializeField] private GameInput gameInput;
     [SerializeField] private GameOverCol overCol;
+    [SerializeField] private int countEnemyDie = 1;
 
+    private int currentCountEnemyDie;
     private bool isPause = false;
 
     private void OnEnable()
@@ -64,7 +68,7 @@ public class Game_Manager : MonoBehaviour
     IEnumerator RestartWindow()
     {
         yield return new WaitForSeconds(2.0f);
-        GameOverWindow.gameObject.SetActive(true);
+        gameOverWindow.gameObject.SetActive(true);
         Time.timeScale = 0f;
     }
 
@@ -73,8 +77,19 @@ public class Game_Manager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void NextLevel()
+    public void CompleteGame()
     {
+        currentCountEnemyDie++;
+        if(currentCountEnemyDie >= countEnemyDie)
+        {
+            Time.timeScale = 0f;
+            nextLevelWindow.gameObject.SetActive(true);
+        }
+    }
 
+    public void NexltLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Time.timeScale = 1f;
     }
 }

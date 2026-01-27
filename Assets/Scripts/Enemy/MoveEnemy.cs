@@ -52,8 +52,11 @@ public class MoveEnemy : MonoBehaviour
     {
         colliderDoor.OnOpenDoor += MoveEnemy_OnOpenDoor;
         colliderDoor.OnCloseDoor += MoveEnemy_OnCloseDoor;
-        callEnemy.OnActiveEnemy += MoveEnemy_OnActiveEnemy;
-        callEnemy.OnDiactiveCall+= MoveEnemy_OnDiactiveCall;
+        if (callEnemy != null)
+        {
+            callEnemy.OnActiveEnemy += MoveEnemy_OnActiveEnemy;
+            callEnemy.OnDiactiveCall += MoveEnemy_OnDiactiveCall;
+        }
     }
 
     private void MoveEnemy_OnDiactiveCall(object sender, EventArgs e)

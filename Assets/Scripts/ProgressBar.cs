@@ -25,7 +25,6 @@ public class ProgressBar : MonoBehaviour
 
     private void ProgressBar_OnProgressSet(object sender, float e)
     {
-
         bar.fillAmount = e;
     }
 
