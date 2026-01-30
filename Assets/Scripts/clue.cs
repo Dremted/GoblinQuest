@@ -9,8 +9,7 @@ public class clue : MonoBehaviour, IInteract
 
     public void Interact(Player player)
     {
-        if(player.currentPlayerState != PlayerState.Move)
-            message_Clue.SetActive(true);
+         message_Clue.SetActive(true);
     }
 
     private void Awake()

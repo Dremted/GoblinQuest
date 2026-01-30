@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyVisual : MonoBehaviour
 {
+    [SerializeField] private Game_Manager game_manager;
     private Animator animator;
     private MoveEnemy enemy;
 
@@ -33,6 +34,11 @@ public class EnemyVisual : MonoBehaviour
     public void OutTrap()
     {
         enemy.OutTrap();
+    }
+
+    public void EndAnimGame()
+    {
+        game_manager.CompleteGame();
     }
 }
 

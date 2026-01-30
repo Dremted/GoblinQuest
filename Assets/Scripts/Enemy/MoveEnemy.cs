@@ -199,6 +199,7 @@ public class MoveEnemy : MonoBehaviour
             currentPointPatrol = offCallPoint;
             moveDir = callPoint.position - transform.position;
             rb.velocity = moveDir.normalized * runSpeed;
+            RotateEnemy();
         }
         if(isDoorVertical)
         {
@@ -262,7 +263,7 @@ public class MoveEnemy : MonoBehaviour
         else
         {
             currentState = lastState;
-
+            moveDir = callPoint.position - transform.position;
             if (currentState == EnemyState.Patrol)
             {
                 currentPointPatrol = exitDoorPatrol;
@@ -309,6 +310,7 @@ public class MoveEnemy : MonoBehaviour
             if (currentState != EnemyState.UseDoor)
             {
                 SetState(EnemyState.Patrol);
+                lastState = EnemyState.Patrol;
                 timerOffCall = 0;
             }
         }

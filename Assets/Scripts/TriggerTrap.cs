@@ -28,7 +28,7 @@ public class TriggerTrap : MonoBehaviour
             if (trapType == TrapType.Killer)
             {
                 enemy.Die();
-                gameManager.CompleteGame();
+
             }
             else
             {

@@ -16,6 +16,7 @@ public class Trap : MonoBehaviour, IInteract
 
 
     [Header("Visual")]
+    [SerializeField] private Transform VisualTrap;
     [SerializeField] private Transform Selected_Trap;
     [SerializeField] private Transform Set_Trap;
 
@@ -95,6 +96,7 @@ public class Trap : MonoBehaviour, IInteract
             col.enabled = true;
             if (clueObject != null)
                 clueObject.gameObject.SetActive(false);
+
         }
     }
 
@@ -153,6 +155,8 @@ public class Trap : MonoBehaviour, IInteract
 
     private void ResetSet()
     {
+        if (VisualTrap != null)
+            VisualTrap.gameObject.SetActive(false);
         currentPlayer.PlayerStopInteract();
         timerSetTrap = 0f;
         currentPlayer = null;
