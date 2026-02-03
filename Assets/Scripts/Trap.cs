@@ -167,6 +167,8 @@ public class Trap : MonoBehaviour, IInteract
     private void ActiveTrap()
     {
         animator.SetTrigger(AnimationString.ActiveTrap);
+        if (VisualTrap != null)
+            VisualTrap.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
