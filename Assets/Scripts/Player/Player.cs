@@ -36,7 +36,6 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         currentPlayerState = PlayerState.Idle;
-        
     }
 
     private void OnEnable()
@@ -116,6 +115,7 @@ public class Player : MonoBehaviour
         moveDirection = gameInput.GetInputMove();
 
         moveDirection.y = 0;
+
     }
 
     private void UpdateMoveState()
