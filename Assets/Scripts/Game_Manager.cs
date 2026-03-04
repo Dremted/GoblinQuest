@@ -16,10 +16,23 @@ public class Game_Manager : MonoBehaviour
 
     private int currentCountEnemyDie;
     private bool isPause = false;
+    private SoundFight soundFight;
+
+    private void Awake()
+    {
+        soundFight = GetComponent<SoundFight>();
+    }
 
     private void OnEnable()
     {
         overCol.OnActiveGameOver += OnActiveGameOver_GameManager;
+        gameInput.OnMenuAction += MenuActoin_CallMenu;
+    }
+
+    private void OnDisable()
+    {
+        overCol.OnActiveGameOver -= OnActiveGameOver_GameManager;
+        gameInput.OnMenuAction -= MenuActoin_CallMenu;
     }
 
     private void OnActiveGameOver_GameManager(object sender, EventArgs e)
@@ -29,7 +42,7 @@ public class Game_Manager : MonoBehaviour
 
     private void Start()
     {
-        gameInput.OnMenuAction += MenuActoin_CallMenu;
+
         menu.gameObject.SetActive(false);
     }
 
@@ -62,6 +75,7 @@ public class Game_Manager : MonoBehaviour
 
     private void GameOver()
     {
+        soundFight.OnSoundFight();
         StartCoroutine(RestartWindow());
     }
 

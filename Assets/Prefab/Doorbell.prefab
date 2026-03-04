@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 4012529791089970458}
   - component: {fileID: 2531838031150143500}
   - component: {fileID: 2779275258940022282}
+  - component: {fileID: 6627449983449157790}
   m_Layer: 0
   m_Name: Doorbell
   m_TagString: Untagged
@@ -266,6 +267,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1183586, y: 0.4239825}
   m_EdgeRadius: 0
+--- !u!114 &6627449983449157790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5791735628417631354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d55715fa8bbed7d429414a10459eeb4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipsBellSound:
+  - {fileID: 8300000, guid: 9c03a0eac4a8d8f4a96cfd8e7f79b888, type: 3}
 --- !u!1 &6492517605588105770
 GameObject:
   m_ObjectHideFlags: 0

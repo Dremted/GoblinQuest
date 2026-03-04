@@ -8,6 +8,7 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField] private AudioClip[] audioClipGetItem;
     [SerializeField] private AudioClip[] audioClipsSetTrap;
     [SerializeField] private AudioClip[] audioClipsHide;
+    [SerializeField] private AudioClip[] audioClipsExitHide;
 
     public void OnStepSound()
     {
@@ -27,5 +28,10 @@ public class SoundPlayer : MonoBehaviour
     public void OnSoundHide()
     {
         SoundManager.Instance.PlayRandomSoundFXClip(audioClipsHide, transform, 1f);
+    }
+
+    public void OnSoundExitHide()
+    {
+        SoundManager.Instance.PlayRandomSoundFXClip(audioClipsExitHide, transform, 1f);
     }
 }

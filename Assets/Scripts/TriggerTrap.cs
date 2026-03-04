@@ -15,6 +15,10 @@ public class TriggerTrap : MonoBehaviour
     [SerializeField] private Transform itemNextTrap;
     [SerializeField] private Game_Manager gameManager;
 
+    [SerializeField] private Transform thisIdlePos;
+    [SerializeField] private Transform anotherIdlePos;
+    [SerializeField] private PointPatrol pointToAnotherStart;
+
     public event EventHandler OnNextTrap;
     public event EventHandler OnActiveTrap;
 
@@ -28,13 +32,23 @@ public class TriggerTrap : MonoBehaviour
             if (trapType == TrapType.Killer)
             {
                 enemy.Die();
-
+                if (anotherIdlePos != null)
+                {
+                    thisIdlePos.gameObject.SetActive(false);
+                    anotherIdlePos.gameObject.SetActive(true);
+                    pointToAnotherStart.SetNewPoint(anotherIdlePos);
+                }
             }
             else
             {
                 OnNextTrap?.Invoke(this, EventArgs.Empty);
                 enemy.OnTrap(this.transform);
-                
+                if (anotherIdlePos != null)
+                {
+                    thisIdlePos.gameObject.SetActive(false);
+                    anotherIdlePos.gameObject.SetActive(true);
+                    pointToAnotherStart.SetNewPoint(anotherIdlePos);
+                }
             }
 
         }

@@ -9,6 +9,7 @@ public class EnemySound : MonoBehaviour
     [SerializeField] private AudioClip[] audioClipsRage;
     [SerializeField] private AudioClip[] audioClipsFallSlink;
     [SerializeField] private AudioClip[] audioClipsDeleteTrap;
+    [SerializeField] private AudioClip[] audioClipsOffCall;
 
     public void OnStepSound()
     {
@@ -33,5 +34,10 @@ public class EnemySound : MonoBehaviour
     public void DeleteTrap()
     {
         SoundManager.Instance.PlayRandomSoundFXClip(audioClipsDeleteTrap, transform, 1f);
+    }
+
+    public void OnOffCallSound()
+    {
+        SoundManager.Instance.PlayRandomSoundFXClip(audioClipsOffCall, transform, 1f);
     }
 }

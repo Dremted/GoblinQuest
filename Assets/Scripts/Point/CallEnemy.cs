@@ -22,12 +22,18 @@ public class CallEnemy : MonoBehaviour, IInteract
     [SerializeField] Transform selected;
     [SerializeField] Transform active_UP;
     [SerializeField] Transform inactive_DOWN;
+    private CallSound callSound;
 
 
     private State currentState;
 
     public event EventHandler OnActiveEnemy;
     public event EventHandler OnDiactiveCall;
+
+    private void Awake()
+    {
+        callSound = GetComponent<CallSound>();
+    }
 
     // Subscribe to enemy event that notifies when the call should be deactivated
     private void OnEnable()
@@ -48,6 +54,7 @@ public class CallEnemy : MonoBehaviour, IInteract
     private void Start()
     {
         currentState = State.Inactive;
+
     }
 
     // Called by the player when interacting with the bell.
@@ -62,6 +69,7 @@ public class CallEnemy : MonoBehaviour, IInteract
     // Activates the call: enables enemy waypoints and updates visual state
     private void Call()
     {
+        callSound.OnSoundDoorBell();
         callPoints.gameObject.SetActive(true);
         OnActiveEnemy?.Invoke(this, EventArgs.Empty);
 

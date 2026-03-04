@@ -156,7 +156,7 @@ public class Trap : MonoBehaviour, IInteract
     private void ResetSet()
     {
         if (VisualTrap != null)
-            VisualTrap.gameObject.SetActive(false);
+            VisualTrap.gameObject.SetActive(true);
         currentPlayer.PlayerStopInteract();
         timerSetTrap = 0f;
         currentPlayer = null;

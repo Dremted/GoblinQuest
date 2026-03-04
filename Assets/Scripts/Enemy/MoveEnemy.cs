@@ -36,6 +36,7 @@ public class MoveEnemy : MonoBehaviour
 
     private float timeToIdle;
     private float maxTimerToIdle = 2f;
+    private EnemyState stateIdle = EnemyState.Idle;
 
     public EnemyState CurrentState => currentState;
 
@@ -107,8 +108,16 @@ public class MoveEnemy : MonoBehaviour
                     Idle();
                     break;
 
+                case EnemyState.Idle_2:
+                    Idle();
+                    break;
+
+                case EnemyState.Idle_3:
+                    Idle();
+                    break;
+
                 case EnemyState.Patrol:
-                    Patrol();
+                    Patrol(stateIdle);
                     break;
 
                 case EnemyState.EnterVerticalDoor:
@@ -138,18 +147,19 @@ public class MoveEnemy : MonoBehaviour
 
     private void Idle()
     {
-        currentPointPatrol = nextPointPatrol;
-        rb.velocity = Vector2.zero;
+        Stop();
+        
         timeToIdle += Time.fixedDeltaTime;
         
         if(timeToIdle > maxTimerToIdle)
         {
+            currentPointPatrol = nextPointPatrol;
             SetState(EnemyState.Patrol);
             timeToIdle = 0;
         }
     }
 
-    private void Patrol()
+    private void Patrol(EnemyState state)
     {
         if (CallState)
         {
@@ -161,7 +171,7 @@ public class MoveEnemy : MonoBehaviour
         if (Vector2.Distance(transform.position, currentPointPatrol.position) <= distanceToPoint)
         {
             rb.velocity = Vector2.zero;
-            SetState(EnemyState.Idle);
+            SetState(state);
         }
         RotateEnemy();
         if(isDoorVertical)
@@ -209,6 +219,12 @@ public class MoveEnemy : MonoBehaviour
 
     private void Gotcha()
     {
+        float posEnemy = transform.position.y - 5f;
+        if (targetPlayer.position.y < posEnemy)
+        {
+            float positionPlayer = targetPlayer.position.y;
+            transform.position = new Vector3(transform.position.x, positionPlayer, transform.position.z);
+        }
         Vector2 target = (targetPlayer.position - transform.position).normalized;
         if (Vector2.Distance(targetPlayer.position, transform.position) < distanceGotcha)
         {
@@ -283,16 +299,17 @@ public class MoveEnemy : MonoBehaviour
 
     public void GotchaEnemy(Transform playerTransfrom)
     {
+
         if (currentState == EnemyState.Gotcha)
             return;
         isGotcha = true;
         targetPlayer = playerTransfrom;
         if (!isDie && currentState != EnemyState.ExitVerticalDoor)
         {
-            Debug.Log("GOTCHA!");
 
             currentState = EnemyState.Gotcha;
         }
+
     }
 
     private void OffCall()
@@ -346,6 +363,11 @@ public class MoveEnemy : MonoBehaviour
         currentTrap.gameObject.SetActive(false);
         currentState = lastState;
     }
+
+    public void SetIdleState(EnemyState state)
+    {
+        stateIdle = state;
+    }
 }
 public enum EnemyState
 {
@@ -359,5 +381,7 @@ public enum EnemyState
     ExitVerticalDoor = 7,
     OffCall = 8,
     Die = 9,
-    OnTrap = 10
+    OnTrap = 10,
+    Idle_2 = 11,
+    Idle_3 = 12,
 }

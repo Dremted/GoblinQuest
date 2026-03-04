@@ -7,6 +7,7 @@ public class HorizontalDoor : MonoBehaviour, IInteract
 {
     [SerializeField] Transform selected;
     [SerializeField] Transform colDoor;
+    [SerializeField] private DoorSound doorSound;
 
     private Player currentPlayer;
     private MoveEnemy enemy;
@@ -19,6 +20,7 @@ public class HorizontalDoor : MonoBehaviour, IInteract
     {
         col = GetComponent<Collider2D>();
         currentStateDoor = StateDoor.Close;
+        doorSound = GetComponent<DoorSound>();
     }
 
     public void Interact(Player player)
@@ -45,6 +47,7 @@ public class HorizontalDoor : MonoBehaviour, IInteract
     {
         if (currentPlayer != null)
         {
+            doorSound.OnDoorOpen();
             currentPlayer.SetPlayerState(PlayerState.Idle);
             currentPlayer = null;
         }

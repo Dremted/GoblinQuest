@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 8854808460238085537}
   - component: {fileID: 3264426259114218760}
   - component: {fileID: 9165511088644707796}
+  - component: {fileID: 5572733649826835868}
   m_Layer: 7
   m_Name: HorizontalDoor
   m_TagString: Untagged
@@ -256,6 +257,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selected: {fileID: 3376160365703502779}
   colDoor: {fileID: 2929494491808934172}
+  doorSound: {fileID: 0}
+--- !u!114 &5572733649826835868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836121644475152020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61b4bff2e438d0c4fbd5778122bb4ef6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioDoorClips:
+  - {fileID: 8300000, guid: 9009f95c1b6f5bb4e865c0ba19670629, type: 3}
 --- !u!1 &7966028604359299459
 GameObject:
   m_ObjectHideFlags: 0

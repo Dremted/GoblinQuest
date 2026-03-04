@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Trap_Chilli
+  m_Controller: {fileID: 9100000, guid: b7f4c53c45a8e2d4b82d6941da679f53, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 59c0ddb0c6d1f434a9ed7771e92f8fd6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e7d5cec6cafc8db4e93b86bfecfd0c0a, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d900551dabb50fd4594e928b46d41622, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 7c30421a557925d45a81463898c5bc0a, type: 2}
