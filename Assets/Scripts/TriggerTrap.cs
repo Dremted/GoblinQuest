@@ -19,15 +19,20 @@ public class TriggerTrap : MonoBehaviour
     [SerializeField] private Transform anotherIdlePos;
     [SerializeField] private PointPatrol pointToAnotherStart;
 
+    [SerializeField] private Transform thingOff;
+
     public event EventHandler OnNextTrap;
     public event EventHandler OnActiveTrap;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out MoveEnemy enemy)) return;
-        Debug.Log($"Enemy State: {enemy.GetEnemyState()}");
         if (enemy.GetEnemyState() != EnemyState.Gotcha)
         {
+            if (thingOff != null)
+            {
+                Destroy(thingOff);
+            }
             OnActiveTrap?.Invoke(this, EventArgs.Empty);
             if (trapType == TrapType.Killer)
             {
